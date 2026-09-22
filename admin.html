@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KUKSOM Election 2027 — Kumbotso LGA</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#14213d;--muted:#687386;--line:#e4e9f0;--brand:#176b3a;--brand2:#0f5130;--accent:#f2b705;--danger:#b42318}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:linear-gradient(135deg,var(--brand2),var(--brand));color:#fff;padding:22px 28px;position:sticky;top:0;z-index:5;box-shadow:0 2px 12px #0002}
+.brand{display:flex;align-items:center;gap:14px}.logo{width:48px;height:48px;border-radius:12px;background:#fff;color:var(--brand);display:grid;place-items:center;font-weight:900;font-size:17px}.brand h1{margin:0;font-size:21px}.brand p{margin:3px 0 0;opacity:.82;font-size:12px}
+.wrap{max-width:1250px;margin:auto;padding:24px}
+.notice{background:#fff8df;border:1px solid #efd477;padding:13px 16px;border-radius:10px;margin-bottom:18px;font-size:13px;line-height:1.5}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}nav button{border:1px solid var(--line);background:#fff;padding:10px 14px;border-radius:8px;cursor:pointer;font-weight:700;color:var(--ink)}nav button.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+.page{display:none}.page.active{display:block}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;box-shadow:0 2px 7px #17203308}.metric{font-size:28px;font-weight:900;margin-top:6px}.label{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.section{margin-top:18px}.section h2{font-size:18px;margin:0 0 12px}.form{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.field label{display:block;font-size:12px;font-weight:800;margin-bottom:6px}.field input,.field select,.field textarea{width:100%;padding:11px;border:1px solid #ccd4df;border-radius:8px;background:#fff;font:inherit}.field textarea{min-height:90px}.full{grid-column:1/-1}.party-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.party{border:1px solid var(--line);padding:12px;border-radius:9px;background:#fafbfd}.party strong{display:block;margin-bottom:7px}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}.btn{border:0;border-radius:8px;padding:11px 15px;font-weight:800;cursor:pointer}.primary{background:var(--brand);color:#fff}.secondary{background:#eaf0f6;color:var(--ink)}.danger{background:#fee4e2;color:var(--danger)}
+table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden}th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;font-size:13px}th{background:#f6f8fb;font-size:11px;text-transform:uppercase;color:var(--muted)}.table-wrap{overflow:auto}
+.filters{display:grid;grid-template-columns:1.3fr 1fr 1fr 1.5fr;gap:10px;margin-bottom:12px}
+.badge{display:inline-block;padding:4px 7px;border-radius:999px;font-size:11px;font-weight:800;background:#eaf4ee;color:var(--brand)}
+.modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:20px;z-index:20}.modal.show{display:flex}.modal-box{background:#fff;max-width:700px;width:100%;max-height:90vh;overflow:auto;border-radius:14px;padding:20px}
+.ward-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.ward{padding:13px;border:1px solid var(--line);border-radius:9px;background:#fff}.ward b{display:block}.small{font-size:12px;color:var(--muted)}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.party-grid{grid-template-columns:repeat(2,1fr)}.filters,.form{grid-template-columns:1fr}.ward-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.wrap{padding:14px}.grid{grid-template-columns:1fr 1fr}.ward-grid{grid-template-columns:1fr}header{padding:16px}.brand h1{font-size:17px}}
+</style>
+
+<style>
+#loginGate{position:fixed;inset:0;background:linear-gradient(135deg,#0f5130,#176b3a);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px}
+.loginbox{background:#fff;width:min(420px,100%);padding:28px;border-radius:16px;box-shadow:0 20px 60px #0005}.loginbox h2{margin:0 0 6px}.loginbox p{color:#687386;font-size:13px}.loginbox input{width:100%;padding:12px;margin:7px 0;border:1px solid #ccd4df;border-radius:8px}.loginbox button{width:100%;margin-top:10px}.loginerr{color:#b42318;font-size:12px;min-height:18px;margin-top:8px}.topuser{margin-left:auto;display:flex;align-items:center;gap:8px}.logout{background:#ffffff22;color:#fff;border:1px solid #ffffff55;padding:8px 10px;border-radius:8px;cursor:pointer}
+</style>
+<style>
+.userbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.userbar input,.userbar select{padding:10px;border:1px solid #ccd4df;border-radius:8px}
+.role-badge{padding:4px 8px;border-radius:999px;background:#eef3f8;font-size:11px;font-weight:800}
+#users.page .card{margin-bottom:14px}
+</style><style>
+.status{display:inline-block;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:800}
+.status-Pending{background:#fff4cc;color:#7a5b00}.status-Verified{background:#e7f6ec;color:#176b3a}.status-Rejected{background:#fee4e2;color:#b42318}
+.verify-actions{display:flex;gap:6px;flex-wrap:wrap}
+.audit{font-size:12px;color:#687386}
+</style>
+<style>
+.page-section{padding:24px 0}.section-head{display:flex;justify-content:space-between;align-items:center;gap:16px}.notice{margin:16px 0;padding:12px 14px;border:1px solid #ddd;border-radius:10px;background:#fafafa}.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:14px 0}.stat{font-size:28px;font-weight:700;margin-top:6px}.table-wrap{overflow:auto}.card{margin:14px 0}.input{width:100%;box-sizing:border-box;margin:6px 0 12px;padding:10px;border:1px solid #ccc;border-radius:8px}.badge{display:inline-block;padding:5px 9px;border-radius:999px;border:1px solid #ccc;font-size:12px}@media(max-width:800px){.grid-3{grid-template-columns:1fr}.section-head{align-items:flex-start;flex-direction:column}}
+</style>
+
+<style>
+.page-section{padding:24px 0}.section-head{display:flex;justify-content:space-between;align-items:center;gap:16px}.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:14px 0}.card{margin:14px 0}.stat{font-size:28px;font-weight:700;margin-top:6px}.input{width:100%;box-sizing:border-box;margin:6px 0 12px;padding:10px;border:1px solid #ccc;border-radius:8px}.table-wrap{overflow:auto}.badge{display:inline-block;padding:5px 9px;border-radius:999px;border:1px solid #ccc;font-size:12px}@media(max-width:800px){.grid-3{grid-template-columns:1fr}.section-head{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<div id="loginGate">
+  <div class="loginbox">
+    <div class="logo" style="margin-bottom:15px">KS</div>
+    <h2>KUKSOM Admin Login</h2>
+    <p>Admin access to the Kumbotso Election 2027 data collection prototype.</p>
+    <input id="loginUser" placeholder="Username" autocomplete="username">
+    <input id="loginPass" type="password" placeholder="Password" autocomplete="current-password">
+    <button class="btn primary" onclick="adminLogin()">Login</button>
+    <div id="loginErr" class="loginerr"></div>
+    <p style="margin-top:14px"><b>Prototype credentials:</b> admin / KUKSOM2027</p>
+    <p class="small">For production, replace this demo login with server-side authentication and hashed passwords.</p>
+  </div>
+</div>
+
+<header><div class="brand"><div class="logo">KS</div><div><h1>KUKSOM ELECTION 2027</h1><p>Kumbotso LGA Election Results Monitoring & Data Collection System</p></div><div class="topuser"><span id="loggedUser">Admin</span><button class="logout" onclick="adminLogout()">Logout</button></div></div></header>
+<div class="wrap">
+<div class="notice"><b>Independent initiative:</b> This platform is presented by <b>Kumbotso Kwankwasiyya Social Media (KUKSOM)</b> for election-result data collection and monitoring in Kumbotso LGA. It is <b>not affiliated with, operated by, or endorsed by INEC</b>. Data shown here is collected/entered data and should not be treated as official election results.</div>
+<nav>
+<button class="active" onclick="showPage('dashboard',this)">Dashboard</button>
+<button onclick="showPage('upload',this)">Upload Result</button>
+<button onclick="showPage('results',this)">Results</button>
+<button onclick="showPage('locations',this)">Wards</button>
+<button onclick="showPage('reports',this)">Reports</button><button onclick="showPage('v10-entry',this)">Live Result Entry</button><button onclick="showPage('demo-reset',this)">Demo Reset</button><button onclick="showPage('verification',this)">Verification</button><button onclick="showPage('audit',this)">Audit Log</button><button id="usersNav" onclick="showPage('users',this)">Users</button>
+</nav>
+
+<section id="dashboard" class="page active">
+<div class="grid">
+<div class="card"><div class="label">Records received</div><div class="metric" id="mRecords">0</div></div>
+<div class="card"><div class="label">Polling units entered</div><div class="metric" id="mPU">0</div></div>
+<div class="card"><div class="label">Total votes recorded</div><div class="metric" id="mVotes">0</div></div>
+<div class="card"><div class="label">Wards represented</div><div class="metric" id="mWards">0 / 11</div></div>
+</div>
+<div class="section card"><h2>Election coverage</h2><div class="table-wrap"><table><thead><tr><th>Election</th><th>Records</th><th>Total votes</th></tr></thead><tbody id="coverage"></tbody></table></div></div>
+<div class="section card"><h2>Party totals</h2><div class="table-wrap"><table><thead><tr><th>Party</th><th>Votes recorded</th></tr></thead><tbody id="partyTotals"></tbody></table></div></div>
+</section>
+
+<section id="upload" class="page">
+<div class="card"><h2>Upload / Enter Polling Unit Result</h2>
+<div class="form">
+<div class="field"><label>Election</label><select id="election"><option>Presidential</option><option>Governorship</option><option>Senatorial</option><option>House of Representatives</option><option>State House of Assembly</option></select></div>
+<div class="field"><label>Ward</label><select id="ward"></select></div>
+<div class="field"><label>Polling Unit ID</label><input id="pu" placeholder="e.g. 001"></div>
+<div class="field"><label>Polling Unit Name</label><input id="puName" placeholder="Enter the polling unit name"></div>
+<div class="field"><label>Uploaded / Entered by</label><input id="uploader" placeholder="Name of data collector"></div>
+<div class="field"><label>Collection date</label><input id="date" type="date"></div>
+<div class="field full"><label>Party votes</label><div class="party-grid">
+<div class="party"><strong>APC</strong><input id="APC" type="number" min="0" value="0"></div>
+<div class="party"><strong>PDP</strong><input id="PDP" type="number" min="0" value="0"></div>
+<div class="party"><strong>NDC</strong><input id="NDC" type="number" min="0" value="0"></div>
+<div class="party"><strong>ADC</strong><input id="ADC" type="number" min="0" value="0"></div>
+<div class="party"><strong>NNPP</strong><input id="NNPP" type="number" min="0" value="0"></div>
+</div></div>
+<div class="field full"><label>Evidence / Result sheet filename (optional)</label><input id="file" type="text" placeholder="e.g. PU001_result_sheet.jpg"></div>
+<div class="field full"><label>Notes</label><textarea id="note" placeholder="Optional notes about the result collection"></textarea></div>
+</div>
+<div class="actions"><button class="btn primary" onclick="saveRecord()">Save Result</button><button class="btn secondary" onclick="resetForm()">Clear</button></div>
+</div>
+</section>
+
+<section id="results" class="page">
+<div class="card"><h2>Collected Results</h2>
+<div class="filters"><select id="fElection" onchange="renderResults()"><option value="">All elections</option><option>Presidential</option><option>Governorship</option><option>Senatorial</option><option>House of Representatives</option><option>State House of Assembly</option></select><select id="fWard" onchange="renderResults()"><option value="">All wards</option></select><input id="search" oninput="renderResults()" placeholder="Search PU ID, name, uploader..."><button class="btn secondary" onclick="exportCSV()">Export CSV</button></div>
+<div class="table-wrap"><table><thead><tr><th>Election</th><th>Ward</th><th>PU</th><th>APC</th><th>PDP</th><th>NDC</th><th>ADC</th><th>NNPP</th><th>Action</th></tr></thead><tbody id="resultRows"></tbody></table></div>
+</div></section>
+
+<section id="locations" class="page">
+<div class="card"><h2>Kumbotso LGA — 11 Wards</h2><p class="small">The ward list below is preloaded for the KUKSOM collection project. Polling-unit names/IDs should be populated from the current authoritative INEC directory before production use.</p><div class="ward-grid" id="wardCards"></div></div>
+</section>
+
+
+<section id="polling-units" class="page-section">
+  <div class="section-head">
+    <div>
+      <h2>Polling Unit Database</h2>
+      <p>Ward → Polling Unit selection for Kumbotso LGA.</p>
+    </div>
+    <button class="btn primary" onclick="openPUForm()">+ Add Polling Unit</button>
+  </div>
+
+  <div class="notice">
+    <strong>Data source note:</strong> Polling-unit names/codes should be verified against the latest INEC directory before production use.
+    The currently available INEC directory includes historical records, so this prototype does not assume those records are the final 2027 list.
+  </div>
+
+  <div class="grid-3">
+    <div class="card"><div class="muted">Total PUs</div><div class="stat" id="puTotal">0</div></div>
+    <div class="card"><div class="muted">Wards covered</div><div class="stat" id="puWards">0</div></div>
+    <div class="card"><div class="muted">Search</div><input id="puSearch" class="input" placeholder="Search PU name/code..." oninput="renderPUs()"></div>
+  </div>
+
+  <div class="card">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Ward</th><th>PU Code</th><th>Polling Unit</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="puTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div id="puModal" class="modal hidden">
+  <div class="modal-card">
+    <div class="section-head"><h3 id="puModalTitle">Add Polling Unit</h3><button class="btn" onclick="closePUForm()">✕</button></div>
+    <input type="hidden" id="puEditId">
+    <label>Ward<select id="puWard" class="input"></select></label>
+    <label>PU Code<input id="puCode" class="input" placeholder="e.g. 001"></label>
+    <label>Polling Unit Name<input id="puName" class="input" placeholder="Official polling unit name"></label>
+    <label>Status<select id="puStatus" class="input"><option>Active</option><option>Review Required</option><option>Inactive</option></select></label>
+    <div class="actions"><button class="btn" onclick="closePUForm()">Cancel</button><button class="btn primary" onclick="savePU()">Save</button></div>
+  </div>
+</div>
+
+
+<section id="backend" class="page-section">
+  <div class="section-head">
+    <div>
+      <h2>V7 — Backend & Database Setup</h2>
+      <p>Production architecture for shared online data, authentication and synchronized results.</p>
+    </div>
+    <span class="badge">Backend Ready</span>
+  </div>
+
+  <div class="notice">
+    <strong>Prototype status:</strong> This page defines the connection structure only. The current demo still stores data locally.
+    For production, connect it to a secure server/database and keep passwords, API keys and service credentials on the server.
+  </div>
+
+  <div class="grid-3">
+    <div class="card"><div class="muted">Frontend</div><div class="stat">KUKSOM</div><p>Dashboard, data entry and public results.</p></div>
+    <div class="card"><div class="muted">API</div><div class="stat">REST</div><p>Users, wards, PUs, results and verification.</p></div>
+    <div class="card"><div class="muted">Database</div><div class="stat">SQL</div><p>Central shared database for all authorized users.</p></div>
+  </div>
+
+  <div class="card">
+    <h3>Core Database Tables</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Table</th><th>Purpose</th><th>Key fields</th></tr></thead>
+        <tbody>
+          <tr><td>users</td><td>Admin and staff accounts</td><td>id, name, role, password_hash, status</td></tr>
+          <tr><td>wards</td><td>Kumbotso ward directory</td><td>id, lga_id, name</td></tr>
+          <tr><td>polling_units</td><td>Official PU directory</td><td>id, ward_id, code, name, status</td></tr>
+          <tr><td>elections</td><td>Election categories</td><td>id, type, election_date</td></tr>
+          <tr><td>results</td><td>Result submission records</td><td>id, election_id, pu_id, status, submitted_by</td></tr>
+          <tr><td>result_votes</td><td>Party vote totals</td><td>result_id, party, votes</td></tr>
+          <tr><td>result_files</td><td>Uploaded result sheets</td><td>result_id, file_url, hash</td></tr>
+          <tr><td>audit_logs</td><td>Accountability trail</td><td>user_id, action, record_id, timestamp</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>API Configuration</h3>
+    <label>API Base URL<input id="apiBaseUrl" class="input" placeholder="https://your-domain.com/api"></label>
+    <label>Connection mode<select id="apiMode" class="input"><option value="demo">Demo / Local</option><option value="api">Live API</option></select></label>
+    <button class="btn primary" onclick="saveAPIConfig()">Save Configuration</button>
+    <span id="apiSaved" class="muted"></span>
+  </div>
+</section>
+
+
+<section id="v9-workflow" class="page-section">
+  <div class="section-head">
+    <div><h2>V9 — Connected Results Workflow</h2><p>Collector submission → verification → public verified-results view.</p></div>
+    <span class="badge">Workflow</span>
+  </div>
+
+  <div class="grid-3">
+    <div class="card"><div class="muted">1. Collector</div><div class="stat">Submit</div><p>Enter votes by election and polling unit.</p></div>
+    <div class="card"><div class="muted">2. Verifier</div><div class="stat">Verify</div><p>Check the result sheet and approve or reject.</p></div>
+    <div class="card"><div class="muted">3. Public</div><div class="stat">Publish</div><p>Only verified KUKSOM data is shown publicly.</p></div>
+  </div>
+
+  <div class="card">
+    <h3>Live API Result Test</h3>
+    <label>API Base URL<input id="v9Api" class="input" placeholder="http://localhost:3000/api"></label>
+    <button class="btn primary" onclick="v9LoadResults()">Load Results</button>
+    <span id="v9Msg" class="muted"></span>
+  </div>
+
+  <div class="card">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Election</th><th>Ward</th><th>PU</th><th>APC</th><th>PDP</th><th>NDC</th><th>ADC</th><th>NNPP</th><th>Status</th></tr></thead>
+        <tbody id="v9ResultsBody"><tr><td colspan="9" class="muted">Connect the API to load results.</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+
+<section id="v10-entry" class="page">
+<div class="card">
+  <h2>V10 — Complete Result Entry System</h2>
+  <p class="small">Live API workflow: Election → Ward → Polling Unit → Party Votes → Result Sheet → Submit for Verification.</p>
+  <div id="v10AuthState" class="notice">Not connected. Please log in through the API.</div>
+
+  <div class="form">
+    <div class="field">
+      <label>API Base URL</label>
+      <input id="v10Api" placeholder="http://localhost:3000/api">
+    </div>
+    <div class="field">
+      <label>API Connection</label>
+      <button class="btn secondary" onclick="v10TestAPI()">Test Connection</button>
+      <span id="v10ConnMsg" class="small"></span>
+    </div>
+
+    <div class="field">
+      <label>Election</label>
+      <select id="v10Election"><option value="">Loading elections...</option></select>
+    </div>
+    <div class="field">
+      <label>Ward</label>
+      <select id="v10Ward"><option value="">Loading wards...</option></select>
+    </div>
+    <div class="field full">
+      <label>Polling Unit</label>
+      <select id="v10PU"><option value="">Select a ward first</option></select>
+    </div>
+
+    <div class="field full">
+      <label>Party Votes</label>
+      <div class="party-grid">
+        <div class="party"><strong>APC</strong><input id="v10APC" type="number" min="0" step="1" value="0" oninput="v10Total()"></div>
+        <div class="party"><strong>PDP</strong><input id="v10PDP" type="number" min="0" step="1" value="0" oninput="v10Total()"></div>
+        <div class="party"><strong>NDC</strong><input id="v10NDC" type="number" min="0" step="1" value="0" oninput="v10Total()"></div>
+        <div class="party"><strong>ADC</strong><input id="v10ADC" type="number" min="0" step="1" value="0" oninput="v10Total()"></div>
+        <div class="party"><strong>NNPP</strong><input id="v10NNPP" type="number" min="0" step="1" value="0" oninput="v10Total()"></div>
+      </div>
+      <p><b>Total votes:</b> <span id="v10TotalVotes">0</span></p>
+    </div>
+
+    <div class="field full">
+      <label>Result Sheet (JPG, PNG or PDF; max 10MB)</label>
+      <input id="v10File" type="file" accept="image/jpeg,image/png,application/pdf">
+      <span id="v10FileMsg" class="small"></span>
+    </div>
+
+    <div class="field full">
+      <label>Notes</label>
+      <textarea id="v10Notes" placeholder="Optional notes for the verifier"></textarea>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn primary" onclick="v10Submit()">Submit Result for Verification</button>
+    <button class="btn secondary" onclick="v10Reset()">Clear Form</button>
+  </div>
+  <div id="v10Msg" class="notice" style="display:none;margin-top:12px"></div>
+</div>
+
+<div class="card section">
+  <h3>My / Live Submitted Results</h3>
+  <div class="actions">
+    <button class="btn secondary" onclick="v10LoadResults()">Refresh</button>
+    <select id="v10StatusFilter" onchange="v10LoadResults()">
+      <option value="">All statuses</option><option>Pending</option><option>Verified</option><option>Rejected</option>
+    </select>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Election</th><th>Ward</th><th>Polling Unit</th><th>Total</th><th>Status</th><th>Evidence</th></tr></thead>
+      <tbody id="v10Rows"><tr><td colspan="6" class="muted">No live results loaded.</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card section">
+  <h3>Public Verified Results</h3>
+  <p class="small">Only results marked <b>Verified</b> by an authorized verifier are displayed in this public view.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Election</th><th>Ward</th><th>Polling Unit</th><th>APC</th><th>PDP</th><th>NDC</th><th>ADC</th><th>NNPP</th><th>Total</th></tr></thead>
+      <tbody id="v10PublicRows"><tr><td colspan="9" class="muted">No verified results loaded.</td></tr></tbody>
+    </table>
+  </div>
+</div>
+</section>
+
+<section id="reports" class="page">
+<div class="card"><h2>Reports</h2><p class="small">Generate a simple summary from the records currently stored in this browser.</p><div class="actions"><button class="btn primary" onclick="downloadReport()">Download Summary CSV</button></div><div id="reportBox" class="section"></div></div>
+</section>
+</div>
+<section id="users" class="page">
+<div class="card">
+<h2>User Management</h2>
+<p class="small">Prototype role management. In production, user accounts and passwords must be stored and verified on a secure backend.</p>
+<div class="userbar">
+<input id="newUser" placeholder="Username">
+<input id="newName" placeholder="Full name">
+<select id="newRole"><option>Admin</option><option>Data Collector</option><option>Verifier</option><option>Viewer</option></select>
+<button class="btn primary" onclick="addUser()">Add User</button>
+</div>
+<div class="table-wrap"><table><thead><tr><th>Username</th><th>Name</th><th>Role</th><th>Status</th><th>Action</th></tr></thead><tbody id="userRows"></tbody></table></div>
+</div>
+</section>
+
+
+<section id="verification" class="page">
+<div class="card">
+<h2>Live Result Verification</h2>
+<p class="small">Only authorized Admin/Verifier accounts can approve or reject submitted results. Public users see Verified results only.</p>
+<div class="actions"><button class="btn secondary" onclick="loadLiveVerification()">Refresh Pending Results</button></div>
+<div class="table-wrap"><table><thead><tr><th>Election</th><th>Ward</th><th>Polling Unit</th><th>Total</th><th>Status</th><th>Action</th></tr></thead><tbody id="liveVerifyRows"><tr><td colspan="6">Login and connect to the API.</td></tr></tbody></table></div>
+</div></section>
+
+<section id="demo-reset" class="page">
+<div class="card">
+<h2>Demo / Presentation Reset</h2>
+<div class="notice"><b>Admin only.</b> Use this after the KUKSOM demonstration/test election. It deletes all demo results, votes, uploaded result sheets and audit logs from the central database. Wards, Polling Units, elections and user accounts are kept.</div>
+<p class="small">To confirm, type <b>RESET DEMO</b> exactly.</p>
+<input id="resetConfirm" class="input" placeholder="RESET DEMO">
+<button class="btn danger" onclick="resetDemo()">Reset Demo Data</button>
+<div id="resetMsg" class="notice" style="display:none"></div>
+</div></section>
+
+<section id="audit" class="page">
+<div class="card">
+<h2>Audit Log</h2>
+<p class="small">Tracks result submission and verification actions in this prototype.</p>
+<div class="table-wrap"><table><thead><tr><th>Date/Time</th><th>Action</th><th>Record</th><th>Actor</th><th>Note</th></tr></thead><tbody id="auditRows"></tbody></table></div>
+</div>
+</section>
+
+<div class="modal" id="modal"><div class="modal-box"><div id="modalBody"></div><div class="actions"><button class="btn secondary" onclick="closeModal()">Close</button></div></div></div>
+
+<script>
+const wards=["Challawa","Chiranchi","Danbare","Danmaliki","Guringawa","Kumbotso","Kureken Sani","Mariri","Na'ibawa","Panshekara","Unguwar Rimi"];
+const elections=["Presidential","Governorship","Senatorial","House of Representatives","State House of Assembly"];
+const parties=["APC","PDP","NDC","ADC","NNPP"];
+let records=JSON.parse(localStorage.getItem("kuksom_election_2027_records")||"[]");
+
+function init(){
+  fillSelect("ward",wards); fillSelect("fWard",wards,true); 
+  document.getElementById("wardCards").innerHTML=wards.map((w,i)=>`<div class="ward"><b>${String(i+1).padStart(2,"0")}. ${w}</b><span class="small">${records.filter(r=>r.ward===w).length} records entered</span></div>`).join("");
+  document.getElementById("date").value=new Date().toISOString().slice(0,10);
+  renderAll();
+}
+function fillSelect(id,arr,all=false){let s=document.getElementById(id); if(all)s.innerHTML='<option value="">All wards</option>'; arr.forEach(x=>{let o=document.createElement("option");o.value=x;o.textContent=x;s.appendChild(o)})}
+function showPage(id,btn){document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));btn.classList.add("active");if(id==="results")renderResults();if(id==="locations")initLocations();if(id==="reports")renderReport();}
+function saveRecord(){
+ const r={id:Date.now(),election:val("election"),ward:val("ward"),pu:val("pu").trim(),puName:val("puName").trim(),uploader:val("uploader").trim(),date:val("date"),file:val("file").trim(),note:val("note").trim(),status:"Pending"};
+ if(!r.ward||!r.pu){alert("Please select a ward and enter the Polling Unit ID.");return}
+ parties.forEach(p=>r[p]=Number(val(p))||0);
+ records.push(r); persist(); addAudit("Submitted",r,"Result submitted for verification"); alert("Result saved successfully and marked Pending."); resetForm(); renderAll();
+}
+function resetForm(){["pu","puName","uploader","file","note"].forEach(id=>document.getElementById(id).value="");parties.forEach(p=>document.getElementById(p).value=0)}
+function persist(){localStorage.setItem("kuksom_election_2027_records",JSON.stringify(records))}
+function val(id){return document.getElementById(id).value}
+function total(r){return parties.reduce((a,p)=>a+(Number(r[p])||0),0)}
+function renderAll(){renderDashboard();renderResults();initLocations();renderReport()}
+function renderDashboard(){
+ document.getElementById("mRecords").textContent=records.length;
+ document.getElementById("mPU").textContent=new Set(records.map(r=>r.ward+"|"+r.pu)).size;
+ document.getElementById("mVotes").textContent=records.reduce((a,r)=>a+total(r),0).toLocaleString();
+ document.getElementById("mWards").textContent=new Set(records.map(r=>r.ward)).size+" / 11";
+ document.getElementById("coverage").innerHTML=elections.map(e=>{let x=records.filter(r=>r.election===e);return `<tr><td>${e}</td><td>${x.length}</td><td>${x.reduce((a,r)=>a+total(r),0).toLocaleString()}</td></tr>`}).join("");
+ document.getElementById("partyTotals").innerHTML=parties.map(p=>`<tr><td><b>${p}</b></td><td>${records.reduce((a,r)=>a+(Number(r[p])||0),0).toLocaleString()}</td></tr>`).join("");
+}
+function renderResults(){
+ let e=val("fElection"),w=val("fWard"),q=(val("search")||"").toLowerCase();
+ let x=records.filter(r=>(!e||r.election===e)&&(!w||r.ward===w)&&(`${r.pu} ${r.puName} ${r.uploader} ${r.ward}`.toLowerCase().includes(q)));
+ document.getElementById("resultRows").innerHTML=x.length?x.map(r=>`<tr><td>${r.election}</td><td>${r.ward}</td><td>${r.pu} ${r.puName?`<span class="small">(${r.puName})</span>`:""}</td><td>${r.APC}</td><td>${r.PDP}</td><td>${r.NDC}</td><td>${r.ADC}</td><td>${r.NNPP}</td><td><button class="btn secondary" onclick="viewRecord(${r.id})">View</button> <button class="btn danger" onclick="deleteRecord(${r.id})">Delete</button></td></tr>`).join(""):`<tr><td colspan="9">No records found.</td></tr>`;
+}
+function viewRecord(id){let r=records.find(x=>x.id===id);if(!r)return;document.getElementById("modalBody").innerHTML=`<h2>${r.election} — ${r.ward}</h2><p><b>PU:</b> ${r.pu} ${r.puName||""}</p><p><b>Status:</b> ${r.status||"Pending"}</p><p><b>Entered by:</b> ${r.uploader||"—"} &nbsp; <b>Date:</b> ${r.date||"—"}</p><hr>${parties.map(p=>`<p><b>${p}:</b> ${r[p]}</p>`).join("")}<p><b>Total:</b> ${total(r)}</p><p><b>Evidence:</b> ${r.file||"—"}</p><p><b>Notes:</b> ${r.note||"—"}</p>`;document.getElementById("modal").classList.add("show")}
+function closeModal(){document.getElementById("modal").classList.remove("show")}
+function deleteRecord(id){if(confirm("Delete this record?")){records=records.filter(x=>x.id!==id);persist();renderAll()}}
+function initLocations(){document.getElementById("wardCards").innerHTML=wards.map((w,i)=>`<div class="ward"><b>${String(i+1).padStart(2,"0")}. ${w}</b><span class="small">${records.filter(r=>r.ward===w).length} records entered</span></div>`).join("")}
+function renderReport(){let by=wards.map(w=>[w,records.filter(r=>r.ward===w).length]);document.getElementById("reportBox").innerHTML=`<table><thead><tr><th>Ward</th><th>Records</th><th>Total Votes</th></tr></thead><tbody>${by.map(([w,n])=>`<tr><td>${w}</td><td>${n}</td><td>${records.filter(r=>r.ward===w).reduce((a,r)=>a+total(r),0).toLocaleString()}</td></tr>`).join("")}</tbody></table>`}
+function csvRows(){let head=["Election","Ward","PU ID","PU Name","APC","PDP","NDC","ADC","NNPP","Total","Entered By","Date","Evidence","Notes"];let rows=records.map(r=>[r.election,r.ward,r.pu,r.puName,r.APC,r.PDP,r.NDC,r.ADC,r.NNPP,total(r),r.uploader,r.date,r.file,r.note]);return [head,...rows]}
+function downloadCSV(rows,name){let csv=rows.map(row=>row.map(v=>`"${String(v??"").replaceAll('"','""')}"`).join(",")).join("\n");let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download=name;a.click()}
+function exportCSV(){downloadCSV(csvRows(),"kuksom-election-2027-results.csv")}
+function downloadReport(){let rows=[["Ward","Records","Total Votes"],...wards.map(w=>[w,records.filter(r=>r.ward===w).length,records.filter(r=>r.ward===w).reduce((a,r)=>a+total(r),0)])];downloadCSV(rows,"kuksom-election-2027-ward-summary.csv")}
+init();
+</script>
+
+<script>
+function adminLogin(){
+  const u=document.getElementById("loginUser").value.trim();
+  const p=document.getElementById("loginPass").value;
+  if(u==="admin" && p==="KUKSOM2027"){
+    sessionStorage.setItem("kuksom_admin_session","1");
+    document.getElementById("loginGate").style.display="none";
+    document.getElementById("loggedUser").textContent="Admin";
+  }else{
+    document.getElementById("loginErr").textContent="Invalid username or password.";
+  }
+}
+function adminLogout(){
+  sessionStorage.removeItem("kuksom_admin_session");
+  document.getElementById("loginGate").style.display="flex";
+  document.getElementById("loginPass").value="";
+}
+(function(){
+  if(sessionStorage.getItem("kuksom_admin_session")==="1"){
+    document.getElementById("loginGate").style.display="none";
+  }
+})();
+</script>
+
+<script>
+const defaultUsers=[
+ {id:1,username:"admin",name:"KUKSOM Administrator",role:"Admin",status:"Active"},
+ {id:2,username:"collector01",name:"Data Collector 01",role:"Data Collector",status:"Active"},
+ {id:3,username:"verifier01",name:"Result Verifier 01",role:"Verifier",status:"Active"},
+ {id:4,username:"viewer01",name:"Public Viewer",role:"Viewer",status:"Active"}
+];
+let users=JSON.parse(localStorage.getItem("kuksom_users")||"null")||defaultUsers;
+function persistUsers(){localStorage.setItem("kuksom_users",JSON.stringify(users))}
+function currentRole(){return "Admin"}
+function addUser(){
+ const username=document.getElementById("newUser").value.trim();
+ const name=document.getElementById("newName").value.trim();
+ const role=document.getElementById("newRole").value;
+ if(!username||!name){alert("Enter username and full name.");return}
+ if(users.some(u=>u.username.toLowerCase()===username.toLowerCase())){alert("Username already exists.");return}
+ users.push({id:Date.now(),username,name,role,status:"Active"});persistUsers();renderUsers();
+ document.getElementById("newUser").value="";document.getElementById("newName").value="";
+}
+function renderUsers(){
+ const body=document.getElementById("userRows"); if(!body)return;
+ body.innerHTML=users.map(u=>`<tr><td><b>${u.username}</b></td><td>${u.name}</td><td><span class="role-badge">${u.role}</span></td><td>${u.status}</td><td>${u.username==="admin"?"—":`<button class="btn danger" onclick="removeUser(${u.id})">Remove</button>`}</td></tr>`).join("");
+}
+function removeUser(id){
+ if(confirm("Remove this user from the prototype?")){users=users.filter(u=>u.id!==id);persistUsers();renderUsers()}
+}
+const oldShowPage=showPage;
+showPage=function(id,btn){
+ oldShowPage(id,btn);
+ if(id==="users"){renderUsers()}
+};
+renderUsers();
+</script>
+
+<script>
+let audits=JSON.parse(localStorage.getItem("kuksom_audit_log")||"[]");
+function persistAudits(){localStorage.setItem("kuksom_audit_log",JSON.stringify(audits))}
+function addAudit(action,r,note){audits.unshift({time:new Date().toLocaleString(),action,record:`${r.election} / ${r.ward} / PU ${r.pu}`,actor:"Admin",note});persistAudits()}
+function setStatus(id,status){
+ const r=records.find(x=>x.id===id); if(!r)return;
+ r.status=status; persist();
+ addAudit(status==="Verified"?"Verified":"Rejected",r,status==="Verified"?"Result approved":"Result rejected");
+ renderAll(); renderVerification(); renderAudit();
+}
+function renderVerification(){
+ const s=val("vStatus"), e=val("vElection");
+ const x=records.filter(r=>(!s||r.status===s)&&(!e||r.election===e));
+ document.getElementById("verifyRows").innerHTML=x.length?x.map(r=>`<tr>
+ <td>${r.election}</td><td>${r.ward}</td><td>${r.pu}</td><td>${total(r).toLocaleString()}</td>
+ <td><span class="status status-${r.status||"Pending"}">${r.status||"Pending"}</span></td>
+ <td><div class="verify-actions"><button class="btn primary" onclick="setStatus(${r.id},'Verified')">Approve</button><button class="btn danger" onclick="setStatus(${r.id},'Rejected')">Reject</button><button class="btn secondary" onclick="viewRecord(${r.id})">View</button></div></td>
+ </tr>`).join(""):`<tr><td colspan="6">No records found.</td></tr>`;
+}
+function renderAudit(){
+ const b=document.getElementById("auditRows"); if(!b)return;
+ b.innerHTML=audits.length?audits.map(a=>`<tr><td>${a.time}</td><td><b>${a.action}</b></td><td>${a.record}</td><td>${a.actor}</td><td>${a.note}</td></tr>`).join(""):`<tr><td colspan="5">No audit activity yet.</td></tr>`;
+}
+const oldShowPage2=showPage;
+showPage=function(id,btn){
+ oldShowPage2(id,btn);
+ if(id==="verification")renderVerification();
+ if(id==="audit")renderAudit();
+};
+renderVerification(); renderAudit();
+
+/* V6 Polling Unit Database */
+const KUKSOM_WARDS = ["Challawa","Chiranchi","Danbare","Danmaliki","Guringawa","Kumbotso","Kureken Sani","Mariri","Na'ibawa","Panshekara","Unguwar Rimi"];
+const PU_KEY = "kuksom_polling_units_v6";
+function getPUs(){ try{return JSON.parse(localStorage.getItem(PU_KEY)||"[]")}catch(e){return []} }
+function setPUs(v){localStorage.setItem(PU_KEY,JSON.stringify(v));}
+function seedPUFormWard(){
+  const el=document.getElementById("puWard"); if(!el)return;
+  el.innerHTML=KUKSOM_WARDS.map(w=>`<option value="${escapeHtml(w)}">${escapeHtml(w)}</option>`).join("");
+}
+function openPUForm(id){
+  seedPUFormWard();
+  document.getElementById("puEditId").value=id||"";
+  document.getElementById("puModalTitle").textContent=id?"Edit Polling Unit":"Add Polling Unit";
+  if(id){
+    const p=getPUs().find(x=>x.id===id);
+    if(p){puWard.value=p.ward;puCode.value=p.code;puName.value=p.name;puStatus.value=p.status||"Active";}
+  }else{puCode.value="";puName.value="";puStatus.value="Active";}
+  document.getElementById("puModal").classList.remove("hidden");
+}
+function closePUForm(){document.getElementById("puModal").classList.add("hidden");}
+function savePU(){
+  const ward=puWard.value.trim(), code=puCode.value.trim(), name=puName.value.trim(), status=puStatus.value;
+  if(!ward||!code||!name){alert("Please enter Ward, PU Code and Polling Unit Name.");return;}
+  const all=getPUs(), edit=document.getElementById("puEditId").value;
+  const duplicate=all.find(x=>x.ward===ward && x.code===code && x.id!==edit);
+  if(duplicate){alert("This Ward + PU Code already exists.");return;}
+  const now=new Date().toISOString();
+  if(edit){
+    const i=all.findIndex(x=>x.id===edit); if(i>=0) all[i]={...all[i],ward,code,name,status,updatedAt:now};
+  }else{
+    all.push({id:"pu_"+Date.now()+"_"+Math.random().toString(36).slice(2,7),ward,code,name,status,createdAt:now});
+  }
+  setPUs(all); closePUForm(); renderPUs(); updatePUSelectors();
+}
+function deletePU(id){
+  if(!confirm("Delete this polling unit from the prototype database?"))return;
+  setPUs(getPUs().filter(x=>x.id!==id)); renderPUs(); updatePUSelectors();
+}
+function escapeHtml(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
+function renderPUs(){
+  const body=document.getElementById("puTableBody"); if(!body)return;
+  const q=(document.getElementById("puSearch")?.value||"").toLowerCase();
+  const rows=getPUs().filter(p=>(p.ward+" "+p.code+" "+p.name+" "+p.status).toLowerCase().includes(q));
+  body.innerHTML=rows.length?rows.sort((a,b)=>a.ward.localeCompare(b.ward)||a.code.localeCompare(b.code)).map(p=>`
+    <tr><td>${escapeHtml(p.ward)}</td><td>${escapeHtml(p.code)}</td><td>${escapeHtml(p.name)}</td>
+    <td><span class="badge">${escapeHtml(p.status||"Active")}</span></td>
+    <td><button class="btn small" onclick="openPUForm('${p.id}')">Edit</button>
+    <button class="btn small danger" onclick="deletePU('${p.id}')">Delete</button></td></tr>`).join("")
+    : `<tr><td colspan="5" class="muted">No polling units added yet.</td></tr>`;
+  document.getElementById("puTotal").textContent=getPUs().length;
+  document.getElementById("puWards").textContent=new Set(getPUs().map(p=>p.ward)).size;
+}
+function updatePUSelectors(){
+  // Upgrade any existing result-form PU selector if present.
+  const sel=document.getElementById("pollingUnit")||document.getElementById("puSelect");
+  if(!sel)return;
+  const wardSel=document.getElementById("ward");
+  const ward=wardSel?.value||"";
+  const list=getPUs().filter(p=>!ward||p.ward===ward);
+  sel.innerHTML='<option value="">Select Polling Unit</option>'+list.map(p=>`<option value="${escapeHtml(p.code)}">${escapeHtml(p.code)} — ${escapeHtml(p.name)}</option>`).join("");
+}
+document.addEventListener("DOMContentLoaded",()=>{seedPUFormWard();renderPUs();updatePUSelectors();});
+
+
+function saveAPIConfig(){
+  const url=document.getElementById("apiBaseUrl").value.trim();
+  const mode=document.getElementById("apiMode").value;
+  localStorage.setItem("kuksom_api_config_v7",JSON.stringify({url,mode}));
+  document.getElementById("apiSaved").textContent=" Saved.";
+}
+document.addEventListener("DOMContentLoaded",()=>{
+  const c=JSON.parse(localStorage.getItem("kuksom_api_config_v7")||"{}");
+  if(c.url) document.getElementById("apiBaseUrl").value=c.url;
+  if(c.mode) document.getElementById("apiMode").value=c.mode;
+});
+
+
+async function v9LoadResults(){
+  const base=(document.getElementById("v9Api").value||localStorage.getItem("kuksom_v8_api")||((location.protocol.startsWith("http") ? location.origin : "http://localhost:3000")+"/api")).replace(/\/$/,"");
+  const body=document.getElementById("v9ResultsBody"), msg=document.getElementById("v9Msg");
+  localStorage.setItem("kuksom_v9_api",base);
+  try{
+    const r=await fetch(base+"/results"); if(!r.ok) throw new Error("API error");
+    const rows=await r.json();
+    body.innerHTML=rows.length?rows.map(x=>{
+      const v=Object.fromEntries((x.votes||[]).map(a=>[a.party,a.votes]));
+      return `<tr><td>${escapeHtml(x.election_type)}</td><td>${escapeHtml(x.ward_name)}</td><td>${escapeHtml(x.pu_code+" — "+x.pu_name)}</td><td>${v.APC??0}</td><td>${v.PDP??0}</td><td>${v.NDC??0}</td><td>${v.ADC??0}</td><td>${v.NNPP??0}</td><td><span class="badge">${escapeHtml(x.status)}</span></td></tr>`;
+    }).join(""):`<tr><td colspan="9" class="muted">No results found.</td></tr>`;
+    msg.textContent=" Results loaded.";
+  }catch(e){msg.textContent=" API not reachable. Start the V8 server first.";}
+}
+document.addEventListener("DOMContentLoaded",()=>{
+ const v=localStorage.getItem("kuksom_v9_api")||localStorage.getItem("kuksom_v8_api");
+ if(v) document.getElementById("v9Api").value=v;
+});
+
+</script>
+
+<script>
+/* V10 — Complete Result Entry + live API authentication */
+(function(){
+  const PARTIES=["APC","PDP","NDC","ADC","NNPP"];
+  function apiBase(){
+    return (document.getElementById("v10Api")?.value || localStorage.getItem("kuksom_v10_api") || ((location.protocol.startsWith("http") ? location.origin : "http://localhost:3000") + "/api")).replace(/\/$/,"");
+  }
+  function token(){return sessionStorage.getItem("kuksom_api_token")||localStorage.getItem("kuksom_api_token")||"";}
+  function headers(json=true){
+    const h={}; if(json) h["Content-Type"]="application/json"; if(token()) h["Authorization"]="Bearer "+token(); return h;
+  }
+  function msg(text,good=false){
+    const el=document.getElementById("v10Msg"); if(!el)return;
+    el.style.display="block"; el.textContent=text; el.style.background=good?"#eaf4ee":"#fff8df";
+  }
+  function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
+  function saveBase(){localStorage.setItem("kuksom_v10_api",apiBase());}
+  async function jfetch(url,opt={}){const r=await fetch(url,opt); let d={}; try{d=await r.json()}catch(_){}
+    if(!r.ok) throw new Error(d.error||("HTTP "+r.status)); return d;
+  }
+
+  window.v10TestAPI=async function(){
+    saveBase(); const m=document.getElementById("v10ConnMsg");
+    try{const d=await jfetch(apiBase()+"/health");m.textContent=" Connected: "+(d.service||"API");m.style.color="#176b3a";await v10LoadMeta();}
+    catch(e){m.textContent=" "+e.message;m.style.color="#b42318";}
+  };
+
+  async function v10LoadMeta(){
+    try{
+      const [e,w]=await Promise.all([jfetch(apiBase()+"/elections"),jfetch(apiBase()+"/wards")]);
+      const es=document.getElementById("v10Election"), ws=document.getElementById("v10Ward");
+      es.innerHTML='<option value="">Select election</option>'+e.map(x=>`<option value="${x.id}">${esc(x.type)}</option>`).join("");
+      ws.innerHTML='<option value="">Select ward</option>'+w.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join("");
+      ws.onchange=window.v10LoadPUs;
+      document.getElementById("v10AuthState").textContent=token()?"API connected. Logged in as "+(sessionStorage.getItem("kuksom_api_user_name")||"authorized user")+".":"API reachable. Login is required to submit results.";
+      await v10LoadPUs();
+      await v10LoadResults();
+      await v10LoadPublic();
+    }catch(e){document.getElementById("v10ConnMsg").textContent=" "+e.message;}
+  }
+  window.v10LoadPUs=async function(){
+    const ward=document.getElementById("v10Ward").value, sel=document.getElementById("v10PU");
+    if(!ward){sel.innerHTML='<option value="">Select a ward first</option>';return;}
+    try{const rows=await jfetch(apiBase()+"/polling-units?ward_id="+encodeURIComponent(ward));
+      sel.innerHTML='<option value="">Select polling unit</option>'+rows.filter(x=>x.status==="Active").map(x=>`<option value="${x.id}">${esc(x.code)} — ${esc(x.name)}</option>`).join("");
+      if(!rows.length) sel.innerHTML='<option value="">No polling units registered for this ward</option>';
+    }catch(e){sel.innerHTML='<option value="">Unable to load polling units</option>';document.getElementById("v10ConnMsg").textContent=" "+e.message;}
+  };
+  window.v10Total=function(){
+    const n=PARTIES.reduce((s,p)=>s+(Number(document.getElementById("v10"+p).value)||0),0);
+    document.getElementById("v10TotalVotes").textContent=n.toLocaleString();
+  };
+  window.v10Submit=async function(){
+    saveBase();
+    if(!token()){msg("Please log in using the API login. The old demo login is not sufficient for live submissions.");return;}
+    const election_id=Number(document.getElementById("v10Election").value), polling_unit_id=Number(document.getElementById("v10PU").value);
+    if(!election_id||!polling_unit_id){msg("Select the election, ward and polling unit.");return;}
+    const votes={}; for(const p of PARTIES){const el=document.getElementById("v10"+p), n=Number(el.value); if(!Number.isInteger(n)||n<0){msg("Enter a whole number (0 or greater) for "+p+".");return;} votes[p]=n;}
+    const file=document.getElementById("v10File").files[0];
+    if(file && !["image/jpeg","image/png","application/pdf"].includes(file.type)){msg("Result sheet must be JPG, PNG or PDF.");return;}
+    if(file && file.size>10*1024*1024){msg("Result sheet is larger than 10MB.");return;}
+    try{
+      const r=await jfetch(apiBase()+"/results",{method:"POST",headers:headers(true),body:JSON.stringify({election_id,polling_unit_id,votes,notes:document.getElementById("v10Notes").value.trim()})});
+      if(file){
+        const fd=new FormData(); fd.append("file",file);
+        try{await jfetch(apiBase()+"/results/"+r.id+"/files",{method:"POST",headers:headers(false),body:fd});}
+        catch(e){msg("Result saved as Pending, but the result sheet upload failed: "+e.message);await v10LoadResults();return;}
+      }
+      msg("Result submitted successfully and is now Pending Verification.",true);
+      v10Reset(); await v10LoadResults();
+    }catch(e){msg(e.message);}
+  };
+  window.v10Reset=function(){
+    ["v10APC","v10PDP","v10NDC","v10ADC","v10NNPP"].forEach(id=>document.getElementById(id).value=0);
+    document.getElementById("v10Notes").value="";document.getElementById("v10File").value="";document.getElementById("v10FileMsg").textContent="";v10Total();
+  };
+  window.v10LoadResults=async function(){
+    const body=document.getElementById("v10Rows"); if(!body)return;
+    if(!token()){body.innerHTML='<tr><td colspan="6" class="muted">Login required for live result records.</td></tr>';return;}
+    try{
+      const rows=await jfetch(apiBase()+"/results"), filter=document.getElementById("v10StatusFilter").value;
+      const x=rows.filter(r=>!filter||r.status===filter);
+      body.innerHTML=x.length?x.map(r=>{
+        const v=Object.fromEntries((r.votes||[]).map(a=>[a.party,a.votes]));
+        return `<tr><td>${esc(r.election_type)}</td><td>${esc(r.ward_name)}</td><td>${esc(r.pu_code+" — "+r.pu_name)}</td><td>${PARTIES.reduce((s,p)=>s+(Number(v[p])||0),0).toLocaleString()}</td><td><span class="badge">${esc(r.status)}</span></td><td>${r.file_count?esc(r.file_count)+" file(s)":"—"}</td></tr>`;
+      }).join(""):'<tr><td colspan="6">No records found.</td></tr>';
+    }catch(e){body.innerHTML='<tr><td colspan="6">'+esc(e.message)+'</td></tr>';}
+  };
+  window.v10LoadPublic=async function(){
+    const body=document.getElementById("v10PublicRows"); if(!body)return;
+    try{
+      const rows=await jfetch(apiBase()+"/public/results");
+      body.innerHTML=rows.length?rows.map(r=>{
+        const v=Object.fromEntries((r.votes||[]).map(a=>[a.party,a.votes])), total=PARTIES.reduce((s,p)=>s+(Number(v[p])||0),0);
+        return `<tr><td>${esc(r.election_type)}</td><td>${esc(r.ward_name)}</td><td>${esc(r.pu_code+" — "+r.pu_name)}</td>${PARTIES.map(p=>`<td>${Number(v[p]||0).toLocaleString()}</td>`).join("")}<td><b>${total.toLocaleString()}</b></td></tr>`;
+      }).join(""):'<tr><td colspan="9">No verified results yet.</td></tr>';
+    }catch(e){body.innerHTML='<tr><td colspan="9">Public verified-results endpoint unavailable.</td></tr>';}
+  };
+
+  /* Replace the old prototype login with real API login. */
+  window.adminLogin=async function(){
+    const username=document.getElementById("loginUser").value.trim(), password=document.getElementById("loginPass").value;
+    const base=(localStorage.getItem("kuksom_v10_api")||document.getElementById("v10Api")?.value||((location.protocol.startsWith("http") ? location.origin : "http://localhost:3000")+"/api")).replace(/\/$/,"");
+    try{
+      const d=await jfetch(base+"/auth/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username,password})});
+      sessionStorage.setItem("kuksom_api_token",d.token);
+      sessionStorage.setItem("kuksom_api_user_name",d.user.name);
+      sessionStorage.setItem("kuksom_api_role",d.user.role);
+      sessionStorage.setItem("kuksom_admin_session","1");
+      document.getElementById("loginGate").style.display="none";
+      document.getElementById("loggedUser").textContent=d.user.name+" · "+d.user.role;
+      document.getElementById("loginErr").textContent="";
+      if(document.getElementById("v10Api"))document.getElementById("v10Api").value=base;
+      await v10LoadMeta(); await refreshLiveDashboard(); await loadLiveVerification();
+    }catch(e){document.getElementById("loginErr").textContent=e.message;}
+  };
+  window.adminLogout=function(){
+    sessionStorage.removeItem("kuksom_api_token");sessionStorage.removeItem("kuksom_api_user_name");sessionStorage.removeItem("kuksom_api_role");sessionStorage.removeItem("kuksom_admin_session");
+    document.getElementById("loginGate").style.display="flex";document.getElementById("loggedUser").textContent="Not logged in";
+  };
+
+  const oldShow = window.showPage;
+  window.showPage=function(id,btn){ oldShow(id,btn); if(id==="v10-entry"){v10LoadMeta();} };
+
+  document.addEventListener("DOMContentLoaded",()=>{
+    const saved=localStorage.getItem("kuksom_v10_api")||((location.protocol.startsWith("http") ? location.origin : "http://localhost:3000")+"/api");
+    const el=document.getElementById("v10Api"); if(el)el.value=saved;
+    if(token()){
+      document.getElementById("loginGate").style.display="none";
+      document.getElementById("loggedUser").textContent=(sessionStorage.getItem("kuksom_api_user_name")||"User")+" · "+(sessionStorage.getItem("kuksom_api_role")||"");
+    }
+    const f=document.getElementById("v10File"); if(f)f.onchange=()=>document.getElementById("v10FileMsg").textContent=f.files[0]?(f.files[0].name+" selected"):"";
+    v10Total(); if(token()){v10LoadMeta(); refreshLiveDashboard(); loadLiveVerification();}
+  });
+})();
+</script>
+
+
+<script>
+async function loadLiveVerification(){const body=document.getElementById('liveVerifyRows');if(!body)return;const token=sessionStorage.getItem('kuksom_api_token')||'';if(!token){body.innerHTML='<tr><td colspan="6">Admin/Verifier login required.</td></tr>';return;}const base=(localStorage.getItem('kuksom_v10_api')||((location.protocol.startsWith('http')?location.origin:'http://localhost:3000')+'/api')).replace(/\/$/,'');try{const r=await fetch(base+'/results',{headers:{Authorization:'Bearer '+token}});const rows=await r.json();if(!r.ok)throw Error(rows.error||'Unable to load results');const pending=rows.filter(x=>x.status==='Pending');body.innerHTML=pending.length?pending.map(x=>{const v=Object.fromEntries((x.votes||[]).map(a=>[a.party,a.votes]));const t=['APC','PDP','NDC','ADC','NNPP'].reduce((s,p)=>s+(Number(v[p])||0),0);return `<tr><td>${esc(x.election_type)}</td><td>${esc(x.ward_name)}</td><td>${esc(x.pu_code+' — '+x.pu_name)}</td><td>${t.toLocaleString()}</td><td><span class="badge">Pending</span></td><td><button class="btn primary" onclick="verifyLive(${x.id},'Verified')">Verify</button> <button class="btn danger" onclick="verifyLive(${x.id},'Rejected')">Reject</button></td></tr>`}).join(''):'<tr><td colspan="6">No Pending results.</td></tr>';}catch(e){body.innerHTML=`<tr><td colspan="6">${esc(e.message)}</td></tr>`}}
+async function verifyLive(id,status){const token=sessionStorage.getItem('kuksom_api_token')||'';const base=(localStorage.getItem('kuksom_v10_api')||((location.protocol.startsWith('http')?location.origin:'http://localhost:3000')+'/api')).replace(/\/$/,'');if(status==='Rejected'&&!confirm('Reject this result?'))return;try{const r=await fetch(base+'/results/'+id+'/verify',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({status})});let d={};try{d=await r.json()}catch(e){}if(!r.ok)throw Error(d.error||'Verification failed');await loadLiveVerification();await v10LoadResults();await v10LoadPublic();if(typeof refreshLiveDashboard==='function')await refreshLiveDashboard();}catch(e){alert(e.message)}}
+async function refreshLiveDashboard(){const token=sessionStorage.getItem('kuksom_api_token')||'';const base=(localStorage.getItem('kuksom_v10_api')||((location.protocol.startsWith('http')?location.origin:'http://localhost:3000')+'/api')).replace(/\/$/,'');try{const rows=await (await fetch(base+'/public/results')).json();const verified=Array.isArray(rows)?rows:[];document.getElementById('mRecords').textContent=verified.length;document.getElementById('mPU').textContent=new Set(verified.map(x=>x.ward_name+'|'+x.pu_code)).size;document.getElementById('mVotes').textContent=verified.reduce((s,r)=>s+['APC','PDP','NDC','ADC','NNPP'].reduce((a,p)=>a+(Number((r.votes||[]).find(v=>v.party===p)?.votes)||0),0),0).toLocaleString();document.getElementById('mWards').textContent=new Set(verified.map(x=>x.ward_name)).size+' / 11';document.getElementById('coverage').innerHTML=['Presidential','Governorship','Senatorial','House of Representatives','State House of Assembly'].map(e=>{const x=verified.filter(r=>r.election_type===e);return `<tr><td>${e}</td><td>${x.length}</td><td>${x.reduce((s,r)=>s+['APC','PDP','NDC','ADC','NNPP'].reduce((a,p)=>a+(Number((r.votes||[]).find(v=>v.party===p)?.votes)||0),0),0).toLocaleString()}</td></tr>`}).join('');document.getElementById('partyTotals').innerHTML=['APC','PDP','NDC','ADC','NNPP'].map(p=>`<tr><td><b>${p}</b></td><td>${verified.reduce((s,r)=>s+(Number((r.votes||[]).find(v=>v.party===p)?.votes)||0),0).toLocaleString()}</td></tr>`).join('');}catch(e){}}
+</script>
+
+<script>
+async function resetDemo(){
+ const c=document.getElementById('resetConfirm').value.trim();
+ if(c!=='RESET DEMO'){alert('Type RESET DEMO exactly.');return;}
+ if(!confirm('This will permanently delete ALL demo results, votes, uploaded sheets and audit logs. Continue?'))return;
+ const token=sessionStorage.getItem('kuksom_api_token')||'';
+ if(!token){alert('Please login as Admin first.');return;}
+ const base=(localStorage.getItem('kuksom_v10_api')||((location.protocol.startsWith('http')?location.origin:'http://localhost:3000')+'/api')).replace(/\/$/,'');
+ const box=document.getElementById('resetMsg');
+ try{const r=await fetch(base+'/admin/reset-demo',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({confirm:'RESET DEMO'})});let d={};try{d=await r.json()}catch(e){}if(!r.ok)throw Error(d.error||('HTTP '+r.status));box.style.display='block';box.textContent='Demo reset complete. Results, votes, files and audit logs are now zero.';document.getElementById('resetConfirm').value='';await v10LoadResults();await v10LoadPublic();if(typeof refreshLiveDashboard==='function')await refreshLiveDashboard();}catch(e){box.style.display='block';box.textContent='Reset failed: '+e.message;}}
+</script>
+</body></html>
